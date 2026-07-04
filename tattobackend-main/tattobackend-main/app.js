@@ -11,6 +11,9 @@ dotenv.config();
 
 const app = express();
 
+
+//changes done by dev-tejal
+
 // Allowed frontend origins
 const allowedOrigins = [
   "http://localhost:5173",          // local dev

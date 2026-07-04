@@ -1,14 +1,24 @@
 import mongoose from "mongoose";
 
 const connectDB = async () => {
-    try {
-        await mongoose.connect(`${process.env.MONGO_URI}`);
-        console.log("MongoDB connected successfully");
+  const mongoUri = process.env.MONGO_URI || process.env.MONGODB_URI;
 
-    } catch (error) {
-        console.error("Database connection error:", error);
-        process.exit(1);
-    }
-}
+  if (!mongoUri) {
+    console.warn("No MongoDB URI provided. Continuing without database connection.");
+    return false;
+  }
+
+  try {
+    await mongoose.connect(mongoUri, {
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 10000,
+    });
+    console.log("MongoDB connected successfully");
+    return true;
+  } catch (error) {
+    console.error("Database connection error:", error.message);
+    return false;
+  }
+};
 
 export default connectDB;
